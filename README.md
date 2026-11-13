@@ -235,17 +235,51 @@ npm test
 
 Une exécution locale du **13 novembre 2026** a donné **26 tests réussis sur 26**, couvrant notamment les règles d’accès aux dossiers, les routes de consultation d’une fiche et la présence des pages du frontend. Ces tests ne remplacent pas des tests d’intégration complets ni un audit de sécurité.
 
-## 🖼️ Captures d’écran
+## 📸 Captures d'écran de PREFECTA
 
-Les captures peuvent être ajoutées dans `docs/screenshots/` après masquage des noms de personnes, adresses e-mail et autres données sensibles.
+Découvrez les principales interfaces de PREFECTA, une application Full Stack de gestion et d'analyse statistique des activités administratives.
 
-| Écran suggéré | Contenu |
-| --- | --- |
-| Accueil | Présentation et accès aux modules |
-| Tableau de bord | Indicateurs et graphiques |
-| Dossiers | Recherche et suivi des demandes |
-| Fiche dossier | Informations et historique |
-| Rapports | Statistiques et export CSV |
+---
+
+### 🏠 1. Page d'accueil
+
+La page d'accueil présente l'application PREFECTA, ses objectifs et les principales fonctionnalités disponibles.
+
+![Page d'accueil PREFECTA](docs/screenshots/accueil.png)
+
+---
+
+### 📊 2. Tableau de bord
+
+Le tableau de bord permet de visualiser les activités administratives, les indicateurs de performance et les statistiques des dossiers enregistrés.
+
+![Tableau de bord PREFECTA](docs/screenshots/tableau-de-bord.png)
+
+---
+
+### 📁 3. Gestion des dossiers administratifs
+
+Ce module permet aux utilisateurs autorisés d'enregistrer, de rechercher, de consulter et de modifier les dossiers administratifs.
+
+![Gestion des dossiers administratifs](docs/screenshots/dossiers.png)
+
+---
+
+### 📝 4. Fiche détaillée d'un dossier
+
+Chaque dossier administratif possède une fiche détaillée présentant ses informations, son statut, sa priorité et son historique.
+
+![Fiche détaillée d'un dossier](docs/screenshots/dossier-detail.png)
+
+---
+
+### 📈 5. Rapports et statistiques
+
+Le module de rapports permet d'analyser les activités administratives grâce à des indicateurs, des graphiques et des exports de données.
+
+![Rapports et statistiques PREFECTA](docs/screenshots/rapports.png)
+
+---
 
 ## 🔐 Sécurité et confidentialité
 
