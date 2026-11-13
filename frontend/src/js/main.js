@@ -60,6 +60,7 @@ function renderAll(){
   switch(state.page){
     case 'dashboard':renderDashboard();break;
     case 'dossiers':renderDossiers();break;
+    case 'detail':renderDossierDetail();break;
     case 'services':renderServices();break;
     case 'rapports':renderRapports();break;
     case 'agents':renderAgents();break;
@@ -73,8 +74,48 @@ function renderDashboard(){const all=state.dossiers;const stats=[{label:'Total d
 $('kpi-grid').innerHTML=stats.map(s=>`<div class="kpi"><div class="kpi-top"><div class="kpi-title">${s.label}</div><div class="kpi-icon ${s.color}">${sym(s.icon)}</div></div><div class="kpi-number">${money(s.value)}</div><div class="kpi-bottom">${s.note}</div></div>`).join('');
 const now=new Date();const months=Array.from({length:6},(_,idx)=>{let d=new Date(now.getFullYear(),now.getMonth()-5+idx,1);return{key:`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`,name:d.toLocaleDateString('fr-FR',{month:'short'})};});const counts=months.map(m=>({...m,value:all.filter(d=>String(d.date_depot).startsWith(m.key)).length}));let max=Math.max(...counts.map(m=>m.value),1);$('activity-chart').innerHTML=counts.map((m,i)=>`<div class="chart-col"><div class="chart-bar ${i<2?'dim':''}" data-value="${m.value}" style="height:${Math.max(3,(m.value/max)*93)}%"></div><span class="chart-name">${m.name}</span></div>`).join('');
 const sts=statuses(),n=Math.max(all.length,1);let from=0;const sectors=sts.map(s=>{const start=from;from+=100*s.count/n;return `${colors[s.name]} ${start.toFixed(2)}% ${from.toFixed(2)}%`});$('distribution').innerHTML=`<div class="donut" style="background:conic-gradient(${sectors.join(',')})"><div class="donut-center"><strong>${all.length}</strong><small>Dossiers</small></div></div><div class="legend">${sts.filter(s=>s.count>0).map(s=>`<div class="legend-item"><i class="legend-dot" style="background:${colors[s.name]}"></i>${escaped(s.name)}<b>${s.count}</b></div>`).join('')}</div>`;
-$('recent-rows').innerHTML=[...all].sort((a,b)=>new Date(b.date_depot)-new Date(a.date_depot)||Number(b.id)-Number(a.id)).slice(0,6).map(d=>`<tr><td class="record-no">${escaped(d.numero)}</td><td><div class="record-main">${escaped(d.objet)}</div><div class="record-sub">${escaped(d.demandeur)}</div></td><td>${escaped(d.service)}</td><td>${fmt(d.date_depot)}</td><td>${badgeStatus(d.statut)}</td><td><button class="table-action" data-edit="${Number(d.id)}" title="Modifier le dossier">${sym('edit')}</button></td></tr>`).join('')||'<tr><td colspan="6" class="empty">Aucun dossier pour le moment.</td></tr>';}
-function renderDossiers(){const q=($('dossier-search').value||'').trim().toLocaleLowerCase('fr');const status=$('filter-status').value;const service=$('filter-service').value;let all=state.dossiers.filter(d=>(!status||d.statut===status)&&(!service||d.service===service)&&(!q||[d.numero,d.demandeur,d.objet,d.service].some(v=>String(v).toLocaleLowerCase('fr').includes(q)))).sort((a,b)=>new Date(b.date_depot)-new Date(a.date_depot)||Number(b.id)-Number(a.id));const per=8;const pages=Math.max(1,Math.ceil(all.length/per));state.pageIndex=Math.min(Math.max(1,state.pageIndex),pages);const shown=all.slice((state.pageIndex-1)*per,state.pageIndex*per);$('list-counter').textContent=`${all.length} dossier${all.length>1?'s':''} trouvé${all.length>1?'s':''}`;$('all-rows').innerHTML=shown.map(d=>`<tr><td class="record-no">${escaped(d.numero)}</td><td class="record-main">${escaped(d.demandeur)}</td><td>${escaped(d.objet)}</td><td>${escaped(d.service)}</td><td><span class="tag ${d.priorite==='Urgente'?'urgent':'normal'}">${escaped(d.priorite)}</span></td><td>${badgeStatus(d.statut)}</td><td><button class="table-action" data-edit="${Number(d.id)}" title="Modifier">${sym('edit')}</button></td></tr>`).join('')||'<tr><td colspan="7" class="empty">Aucun dossier ne correspond à votre recherche.</td></tr>';$('pagination-label').textContent=all.length?`${(state.pageIndex-1)*per+1} à ${Math.min(all.length,state.pageIndex*per)} sur ${all.length}`:'Aucun résultat';$('pagination').innerHTML=Array.from({length:pages},(_,i)=>`<button class="${i+1===state.pageIndex?'active':''}" data-page-index="${i+1}" aria-label="Page ${i+1}">${i+1}</button>`).join('');}
+$('recent-rows').innerHTML=[...all].sort((a,b)=>new Date(b.date_depot)-new Date(a.date_depot)||Number(b.id)-Number(a.id)).slice(0,6).map(d=>`<tr><td class="record-no">${escaped(d.numero)}</td><td><div class="record-main">${escaped(d.objet)}</div><div class="record-sub">${escaped(d.demandeur)}</div></td><td>${escaped(d.service)}</td><td>${fmt(d.date_depot)}</td><td>${badgeStatus(d.statut)}</td><td><div class="detail-row-actions"><a class="table-action detail-view-link" href="/src/pages/dossier-detail.html?id=${Number(d.id)}" title="Consulter le dossier">Voir</a><button class="table-action" data-edit="${Number(d.id)}" title="Modifier le dossier">${sym('edit')}</button></div></td></tr>`).join('')||'<tr><td colspan="6" class="empty">Aucun dossier pour le moment.</td></tr>';}
+function renderDossiers(){const q=($('dossier-search').value||'').trim().toLocaleLowerCase('fr');const status=$('filter-status').value;const service=$('filter-service').value;let all=state.dossiers.filter(d=>(!status||d.statut===status)&&(!service||d.service===service)&&(!q||[d.numero,d.demandeur,d.objet,d.service].some(v=>String(v).toLocaleLowerCase('fr').includes(q)))).sort((a,b)=>new Date(b.date_depot)-new Date(a.date_depot)||Number(b.id)-Number(a.id));const per=8;const pages=Math.max(1,Math.ceil(all.length/per));state.pageIndex=Math.min(Math.max(1,state.pageIndex),pages);const shown=all.slice((state.pageIndex-1)*per,state.pageIndex*per);$('list-counter').textContent=`${all.length} dossier${all.length>1?'s':''} trouvé${all.length>1?'s':''}`;$('all-rows').innerHTML=shown.map(d=>`<tr><td class="record-no">${escaped(d.numero)}</td><td class="record-main">${escaped(d.demandeur)}</td><td>${escaped(d.objet)}</td><td>${escaped(d.service)}</td><td><span class="tag ${d.priorite==='Urgente'?'urgent':'normal'}">${escaped(d.priorite)}</span></td><td>${badgeStatus(d.statut)}</td><td><div class="detail-row-actions"><a class="table-action detail-view-link" href="/src/pages/dossier-detail.html?id=${Number(d.id)}" title="Consulter le dossier">Voir</a><button class="table-action" data-edit="${Number(d.id)}" title="Modifier">${sym('edit')}</button></div></td></tr>`).join('')||'<tr><td colspan="7" class="empty">Aucun dossier ne correspond à votre recherche.</td></tr>';$('pagination-label').textContent=all.length?`${(state.pageIndex-1)*per+1} à ${Math.min(all.length,state.pageIndex*per)} sur ${all.length}`:'Aucun résultat';$('pagination').innerHTML=Array.from({length:pages},(_,i)=>`<button class="${i+1===state.pageIndex?'active':''}" data-page-index="${i+1}" aria-label="Page ${i+1}">${i+1}</button>`).join('');}
+// Chargement réel de la fiche et de son historique depuis l'API contrôlée par le backend.
+async function renderDossierDetail(){
+  if(!state.user)return;
+  const loading=$('detail-loading'),content=$('detail-data'),error=$('detail-error');
+  const id=new URLSearchParams(location.search).get('id');
+  content.hidden=true;error.hidden=true;
+  if(!id||!/^[1-9]\d*$/.test(id)){
+    loading.hidden=true;error.textContent='Référence de dossier invalide.';error.hidden=false;return;
+  }
+  loading.hidden=false;loading.textContent='Chargement de la fiche et de son historique…';
+  try{
+    const [d,events]=await Promise.all([
+      api('/dossiers/'+encodeURIComponent(id)),
+      api('/dossiers/'+encodeURIComponent(id)+'/historique')
+    ]);
+    if(!state.user)return;
+    const field=(label,value)=>`<div class="detail-field"><dt>${label}</dt><dd>${escaped(value??'—')}</dd></div>`;
+    $('detail-title').textContent=d.numero||'Dossier n°'+id;
+    $('detail-summary').textContent=d.objet||'Dossier administratif';
+    $('detail-reference').textContent=d.numero||'—';
+    $('detail-status').innerHTML=badgeStatus(d.statut);
+    $('detail-priority').innerHTML=`<span class="tag ${d.priorite==='Urgente'?'urgent':'normal'}">${escaped(d.priorite)}</span>`;
+    $('detail-fields').innerHTML=[
+      field('Demandeur',d.demandeur),field('Objet',d.objet),
+      field('Service responsable',d.service),field('Catégorie',d.categorie),
+      field('Date de dépôt',fmt(d.date_depot)),field('Créé par',d.createur||'Compte non disponible'),
+      field('Date de création',d.cree_le?new Date(d.cree_le).toLocaleString('fr-FR'):'—'),
+      field('Dernière modification',d.modifie_le?new Date(d.modifie_le).toLocaleString('fr-FR'):'—')
+    ].join('');
+    $('detail-description').textContent=d.description||'Aucune observation enregistrée.';
+    $('detail-events').innerHTML=events.length?events.map(j=>`<li class="detail-event"><span class="detail-event-dot"></span><div><b>${escaped(j.type_action)}</b><p>${escaped(j.details||'Opération enregistrée.')}</p><small>${escaped(j.agent||'Compte inconnu')} · ${escaped(new Date(j.horodatage).toLocaleString('fr-FR'))}</small></div></li>`).join('')
+      :'<li class="detail-event"><div>Pas encore d’événement enregistré pour ce dossier.</div></li>';
+    const btn=$('detail-edit');
+    if(btn){btn.dataset.edit=String(d.id);btn.hidden=!canEditDossiers(state.user);}
+    loading.hidden=true;content.hidden=false;
+  }catch(e){
+    loading.hidden=true;error.textContent='Impossible de charger le dossier : '+e.message;
+    error.hidden=false;
+  }
+}
 function updateServiceOptions(){
  const f=$('filter-service'),d=$('field-service');
  const selectedFilter=f?.value||'',selectedDossier=d?.value||'';
@@ -164,7 +205,7 @@ function goPage(name){
   if(['agents','journal'].includes(name)&&state.user?.role!=='Administrateur')return notify('Accès réservé à l’administrateur.');
   if(PAGE_URLS[name])location.assign('/src/pages/'+PAGE_URLS[name]);
 }
-function openModal(id=null){state.editing=id;const d=state.dossiers.find(x=>Number(x.id)===Number(id));$('modal-title').textContent=d?'Modifier le dossier':'Nouveau dossier';$('dossier-id').value=d?d.id:'';$('field-demandeur').value=d?d.demandeur:'';$('field-objet').value=d?d.objet:'';$('field-service').value=d?d.service:'';$('field-categorie').value=d?d.categorie:'Demande d’attestation';$('field-statut').value=d?d.statut:'Reçu';$('field-priorite').value=d?d.priorite:'Normale';$('field-description').value=d?d.description||'':'';$('modal-overlay').hidden=false;document.body.style.overflow='hidden';setTimeout(()=>$('field-demandeur').focus(),20);}
+function openModal(id=null){const d=state.dossiers.find(x=>Number(x.id)===Number(id));if(id!==null&&!d){notify('Dossier indisponible dans votre liste.');return;}state.editing=id;$('modal-title').textContent=d?'Modifier le dossier':'Nouveau dossier';$('dossier-id').value=d?d.id:'';$('field-demandeur').value=d?d.demandeur:'';$('field-objet').value=d?d.objet:'';$('field-service').value=d?d.service:'';$('field-categorie').value=d?d.categorie:'Demande d’attestation';$('field-statut').value=d?d.statut:'Reçu';$('field-priorite').value=d?d.priorite:'Normale';$('field-description').value=d?d.description||'':'';$('modal-overlay').hidden=false;document.body.style.overflow='hidden';setTimeout(()=>$('field-demandeur').focus(),20);}
 function closeModal(){$('modal-overlay').hidden=true;document.body.style.overflow='';}
 async function saveForm(ev){
  ev.preventDefault();const id=$('dossier-id').value;
@@ -226,6 +267,7 @@ function wire(){
  const on=(id,event,handler)=>{const el=$(id);if(el)el.addEventListener(event,handler);};
  on('dashboard-add','click',()=>openModal());
  on('dossier-add','click',()=>openModal());
+ on('detail-print','click',()=>window.print());
  on('close-modal','click',closeModal);
  on('cancel-modal','click',closeModal);
  on('modal-overlay','click',e=>{if(e.target===$('modal-overlay'))closeModal();});

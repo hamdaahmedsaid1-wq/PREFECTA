@@ -17,8 +17,14 @@ function validateDossier(obj={}){
 function canWriteService(user, serviceId){
   return user?.role==='Administrateur'||(user?.role==='Agent'&&isId(user.service_id)&&Number(user.service_id)===Number(serviceId));
 }
+// Autorisation en lecture : un agent ou lecteur ne voit que son service affecté.
+function canReadService(user, dossierServiceName, assignedServiceName){
+  return user?.role==='Administrateur'||(
+    ['Agent','Lecteur'].includes(user?.role)&&isId(user?.service_id)&&
+    !!assignedServiceName&&assignedServiceName===dossierServiceName);
+}
 function canEditService(user, originalServiceName, targetServiceName, assignedServiceName){
   return user?.role==='Administrateur'||(user?.role==='Agent'&&!!assignedServiceName&&
      assignedServiceName===originalServiceName&&assignedServiceName===targetServiceName);
 }
-module.exports={CATEGORIES,STATUS,PRIORITIES,ROLES,isId,trim,validateDossier,canWriteService,canEditService};
+module.exports={CATEGORIES,STATUS,PRIORITIES,ROLES,isId,trim,validateDossier,canWriteService,canEditService,canReadService};

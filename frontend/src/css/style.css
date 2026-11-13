@@ -18,3 +18,37 @@
 /* Navigation multipage : les fichiers HTML sont chargés indépendamment. */
 .nav-item{text-decoration:none}
 [hidden]{display:none!important}
+
+/* PREFECTA — fiche détaillée et actions des dossiers */
+.detail-row-actions,.detail-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.detail-view-link{font-size:11px;font-weight:750;text-decoration:none;padding:9px 11px}
+.detail-view-link:hover{background:#eef5ff}
+.detail-statusbar{display:flex;gap:28px;align-items:center;flex-wrap:wrap;background:white;border:1px solid var(--line);border-radius:12px;padding:18px 24px;margin:12px 0 20px;font-size:12px;color:#50637d}
+.detail-statusbar strong{color:var(--ink)}
+.detail-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(260px,1fr);gap:18px;align-items:stretch}
+.detail-card,.detail-history{padding:26px}
+.detail-card h2,.detail-history h2{font-size:18px;margin:0 0 22px}
+.detail-fields{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:21px 26px}
+.detail-field dt{font-size:11px;color:#8594a8;font-weight:700;margin-bottom:8px}
+.detail-field dd{margin:0;font-size:13px;color:#192b47;font-weight:750;overflow-wrap:anywhere}
+.detail-description{font-size:13px;color:#536780;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
+.detail-history{margin-top:20px}
+.detail-history .subtitle{font-size:12px;margin-bottom:15px}
+.detail-timeline{list-style:none;padding:0;margin:0;display:grid;gap:0}
+.detail-event{position:relative;display:flex;gap:16px;padding:14px 10px 14px 1px;border-bottom:1px solid #edf1f7;font-size:12px;line-height:1.5}
+.detail-event:last-child{border-bottom:0}
+.detail-event-dot{width:12px;height:12px;flex:0 0 12px;border-radius:50%;background:var(--teal);margin-top:4px;box-shadow:0 0 0 4px #e6f6f2}
+.detail-event b{color:#213453}
+.detail-event p{color:#667991;margin:5px 0}
+.detail-event small{color:#8997a9}
+.detail-error{background:#fff0f1;color:#ad3545;border-color:#f9d7db}
+@media(max-width:920px){.detail-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.detail-fields{grid-template-columns:1fr}.detail-card,.detail-history{padding:19px}.detail-statusbar{gap:12px}}
+@media print{
+  body,.content{background:white!important}
+  .sidebar,.topbar,.detail-actions,.toast,.modal-overlay,.login-overlay,.backdrop{display:none!important}
+  .workspace{margin:0!important;width:100%!important}
+  .content{padding:10px!important}
+  .detail-card,.detail-history,.detail-statusbar{box-shadow:none!important;break-inside:avoid;border:1px solid #d8dce5!important}
+  #detail-data[hidden],#detail-loading,#detail-error{display:none!important}
+}

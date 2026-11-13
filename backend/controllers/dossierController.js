@@ -1,7 +1,7 @@
 'use strict';
 
 const db=require('../config/database');
-const {isId,validateDossier,canWriteService,canEditService}=require('../utils/rules');
+const {isId,validateDossier,canWriteService,canEditService,canReadService}=require('../utils/rules');
 const {fail,audit,findService}=require('../utils/helpers');
 
 const list = async(req,res,next)=>{try{
@@ -53,4 +53,44 @@ const update = async(req,res,next)=>{
   }catch(e){await conn.rollback();next(e);}finally{conn.release();}
 };
 
-module.exports={list,create,update};
+// Fiche détaillée et historique : autorisation côté serveur, jamais uniquement dans l'interface.
+async function authorizedDossier(req,res){
+  const id=Number(req.params.id);
+  if(!isId(req.params.id)){fail(res,400,'Identifiant de dossier incorrect.');return null;}
+  const [rows]=await db.execute(`SELECT d.id,d.numero,d.demandeur,d.objet,d.service,
+      d.categorie,d.statut,d.priorite,d.description,d.date_depot,d.cree_le,
+      d.modifie_le,d.cree_par,u.nom AS createur
+    FROM dossiers d LEFT JOIN utilisateurs u ON u.id=d.cree_par
+    WHERE d.id=? LIMIT 1`,[id]);
+  const dossier=rows[0];
+  if(!dossier){fail(res,404,'Dossier introuvable.');return null;}
+  if(req.user.role!=='Administrateur'){
+    const [services]=await db.execute('SELECT nom FROM services WHERE id=? LIMIT 1',
+      [req.user.service_id||0]);
+    if(!canReadService(req.user,dossier.service,services[0]?.nom)){
+      // Ne pas révéler si un dossier d'un autre service existe.
+      fail(res,404,'Dossier introuvable.');return null;
+    }
+  }
+  return dossier;
+}
+
+const getOne=async(req,res,next)=>{try{
+  const dossier=await authorizedDossier(req,res);
+  if(!dossier)return;
+  res.set('Cache-Control','no-store');
+  res.json(dossier);
+}catch(e){next(e);}};
+
+const history=async(req,res,next)=>{try{
+  const dossier=await authorizedDossier(req,res);
+  if(!dossier)return;
+  const [rows]=await db.execute(`SELECT j.id,j.type_action,j.details,j.horodatage,
+    u.nom AS agent FROM journal_activite j
+    LEFT JOIN utilisateurs u ON u.id=j.utilisateur_id
+    WHERE j.dossier_id=? ORDER BY j.horodatage DESC,j.id DESC LIMIT 150`,[dossier.id]);
+  res.set('Cache-Control','no-store');
+  res.json(rows);
+}catch(e){next(e);}};
+
+module.exports={list,create,update,getOne,history};

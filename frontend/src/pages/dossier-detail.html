@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="PREFECTA : logiciel de gestion des dossiers administratifs et des services" name="description"/>
+<title>PREFECTA · Fiche détaillée</title>
+<link href="/src/css/style.css" rel="stylesheet"/>
+</head>
+<body data-page="detail">
+<div class="app" id="app">
+<aside class="sidebar" id="sidebar">
+<div class="brand">
+<div aria-hidden="true" class="brand-symbol"><svg fill="none" viewbox="0 0 34 34"><path d="M17 4 29 10v11L17 29 5 21V10L17 4Z" stroke="currentColor" stroke-width="1.8"></path><path d="m11 17 4 4 8-9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4"></path></svg></div>
+<div><strong>PREFECT<span>A</span></strong><small>Gestion administrative · installation locale</small></div>
+</div>
+<div class="sidebar-section-title">ESPACE DE GESTION</div>
+<nav aria-label="Navigation principale" class="nav" id="main-nav">
+<a class="nav-item" data-page="dashboard" href="/src/pages/tableau-de-bord.html"><span data-icon="grid"></span><span>Tableau de bord</span></a>
+<a class="nav-item active" data-page="detail" href="/src/pages/dossiers.html"><span data-icon="folders"></span><span>Dossiers administratifs</span><span class="nav-count" id="sidebar-count">18</span></a>
+<a class="nav-item" data-page="services" href="/src/pages/services.html"><span data-icon="building"></span><span>Services</span></a>
+<a class="nav-item" data-page="rapports" href="/src/pages/rapports.html"><span data-icon="bar"></span><span>Rapports et statistiques</span></a>
+</nav>
+<div class="sidebar-section-title section-gap">ADMINISTRATION</div>
+<nav aria-label="Administration" class="nav">
+<a class="nav-item" data-page="agents" href="/src/pages/agents.html"><span data-icon="users"></span><span>Agents et accès</span></a>
+<a class="nav-item" data-page="journal" href="/src/pages/journal.html"><span data-icon="clock"></span><span>Journal d’activité</span></a>
+<a class="nav-item" data-page="parametres" href="/src/pages/parametres.html"><span data-icon="settings"></span><span>Paramètres</span></a>
+</nav>
+<div class="sidebar-bottom">
+<div class="sidebar-help"><span class="sidebar-help-icon" data-icon="shield"></span><b>Application métier</b><p>Installation locale · utilisation institutionnelle soumise à validation.</p></div>
+<button class="account" id="account-btn" title="Mon compte"><span class="account-avatar">AD</span><span><strong id="account-name">Non connecté</strong><small id="account-sub">Session fermée</small></span><span data-icon="chevron-down"></span></button>
+</div>
+</aside>
+<div class="backdrop" hidden="" id="sidebar-backdrop"></div>
+<div class="workspace">
+<header class="topbar">
+<div class="top-left"><button aria-label="Ouvrir le menu" class="icon-button menu-btn" id="menu-btn"><span data-icon="menu"></span></button><div class="breadcrumb">Préfecture d'Ali-Sabieh <span>/</span> <b id="breadcrumb-current">Fiche de dossier</b></div></div>
+<div class="top-right"><span class="env-tag" id="env-tag"><span class="live-dot"></span> API MySQL</span><span class="top-date" id="today-label"></span><button class="top-avatar" id="top-avatar" title="Profil administrateur">AD</button></div>
+</header>
+<main class="content" id="main-content">
+
+<section class="view active" id="view-dossier-detail">
+<div class="page-title-row"><div><div class="eyebrow">FICHE ADMINISTRATIVE</div><h1 id="detail-title">Consultation d'un dossier</h1><p class="subtitle" id="detail-summary">Détails, statut et suivi des opérations</p></div><div class="detail-actions"><a class="button outlined" href="/src/pages/dossiers.html">← Retour aux dossiers</a><button class="button outlined" id="detail-print" type="button">Imprimer</button><button class="button primary" data-edit="" hidden id="detail-edit" type="button">Modifier le dossier</button></div></div>
+<div class="information-card" id="detail-loading" role="status">Connectez-vous pour consulter le dossier.</div>
+<div class="information-card detail-error" hidden id="detail-error" role="alert"></div>
+<div hidden id="detail-data">
+  <div class="detail-statusbar"><div>Numéro : <strong id="detail-reference"></strong></div><div>Statut : <span id="detail-status"></span></div><div>Priorité : <span id="detail-priority"></span></div></div>
+  <div class="detail-grid">
+    <article class="panel detail-card"><h2>Informations du dossier</h2><dl class="detail-fields" id="detail-fields"></dl></article>
+    <article class="panel detail-card"><h2>Description et observations</h2><p class="detail-description" id="detail-description"></p></article>
+  </div>
+  <article class="panel detail-history"><h2>Historique des opérations</h2><p class="subtitle">Les événements ci-dessous proviennent du journal d'activité de MySQL.</p><ol class="detail-timeline" id="detail-events"></ol></article>
+</div>
+</section>
+</main>
+</div>
+</div>
+<div class="modal-overlay" hidden="" id="modal-overlay">
+<div aria-labelledby="modal-title" aria-modal="true" class="modal" role="dialog"><div class="modal-header"><div><div class="eyebrow">DOSSIER ADMINISTRATIF</div><h2 id="modal-title">Nouveau dossier</h2></div><button aria-label="Fermer" class="icon-button" id="close-modal"><span data-icon="x"></span></button></div><form id="dossier-form"><input id="dossier-id" type="hidden"><div class="modal-form"><label>Nom du demandeur *<input id="field-demandeur" maxlength="120" placeholder="Nom du demandeur" required=""/></label><label>Objet du dossier *<input id="field-objet" maxlength="180" placeholder="Ex. Demande d'attestation" required=""/></label><label>Service concerné *<select id="field-service" required=""><option value="">Choisir un service</option></select></label><label>Catégorie *<select id="field-categorie" required=""><option>Demande d’attestation</option><option>Courrier administratif</option><option>Réclamation</option><option>Autre</option></select></label><label>Statut<select id="field-statut"><option>Reçu</option><option>En cours</option><option>Validé</option><option>Rejeté</option><option>Archivé</option></select></label><label>Priorité<select id="field-priorite"><option>Normale</option><option>Urgente</option></select></label><label class="full">Description / observations<textarea id="field-description" maxlength="1000" placeholder="Informations complémentaires sur la demande..." rows="3"></textarea></label></div><div class="modal-footer"><button class="button outlined" id="cancel-modal" type="button">Annuler</button><button class="button primary" id="save-dossier" type="submit"><span data-icon="check"></span> Enregistrer le dossier</button></div></input></form></div>
+</div>
+<div class="login-overlay" hidden="" id="login-overlay"><div class="login-card"><div class="login-logo">PA</div><h2>Accès au tableau de bord</h2><p>Mode connecté · Comptes autorisés uniquement</p><form id="login-form"><label>E-mail<input autocomplete="username" id="login-email" required="" type="email"/></label><label>Mot de passe<input autocomplete="current-password" id="login-password" required="" type="password"/></label><button class="button primary" type="submit">Se connecter</button><div class="login-error" id="login-error"></div></form><small>Identifiants individuels gérés par l’administrateur ; toute connexion est vérifiée dans MySQL.</small></div></div>
+<div aria-live="polite" class="toast" id="toast" role="status"></div>
+<script type="module" src="/src/js/main.js"></script>
+</body>
+</html>
