@@ -1,2 +1,85 @@
-<!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.svg"><title>PREFECTA — Accueil</title><meta http-equiv="refresh" content="0;url=/src/pages/tableau-de-bord.html"></head><body><p>Chargement du tableau de bord… <a href="/src/pages/tableau-de-bord.html">Ouvrir PREFECTA</a></p></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PREFECTA : plateforme de gestion des dossiers et d'analyse statistique des activités administratives.">
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/src/css/accueil.css">
+  <title>PREFECTA | Accueil</title>
+</head>
+<body>
+  <header class="entete">
+    <div class="conteneur barre-navigation">
+      <a class="marque" href="/" aria-label="PREFECTA, page d'accueil">
+        <span class="marque-icone" aria-hidden="true">✓</span>
+        <span>PREFECT<span class="accent">A</span></span>
+      </a>
+      <nav class="navigation" aria-label="Navigation principale">
+        <a href="#fonctionnalites">Fonctionnalités</a>
+        <a href="#fonctionnement">Fonctionnement</a>
+        <a href="#apropos">À propos</a>
+      </nav>
+      <a class="bouton bouton-petit" href="/src/pages/tableau-de-bord.html">Accéder à l'application <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+
+  <main>
+    <section class="banniere" aria-labelledby="titre-accueil">
+      <div class="conteneur grille-banniere">
+        <div class="banniere-texte">
+          <p class="sur-titre"><span class="point-vert"></span> GESTION ADMINISTRATIVE · PRÉFECTURE D'ALI-SABIEH</p>
+          <h1 id="titre-accueil">Une administration <span>plus simple,</span> un suivi plus efficace.</h1>
+          <p class="description">Bienvenue sur <strong>PREFECTA</strong>, une application de gestion des dossiers administratifs, des services et des activités de la préfecture. Centralisez les informations et suivez l'avancement des demandes depuis un espace unique.</p>
+          <div class="actions">
+            <a class="bouton bouton-principal" href="/src/pages/tableau-de-bord.html">Ouvrir mon espace <span aria-hidden="true">→</span></a>
+            <a class="bouton bouton-secondaire" href="#fonctionnalites">Découvrir les modules</a>
+          </div>
+          <p class="note-banniere">Accès réservé aux comptes autorisés · Application installée en local</p>
+        </div>
+
+        <div class="visuel" aria-label="Aperçu illustratif du suivi administratif">
+          <div class="visuel-entete"><span class="pastille"></span><span>ESPACE DE GESTION</span><span class="badge-apercu">Aperçu</span></div>
+          <h2>Suivi des dossiers</h2>
+          <p class="visuel-description">Un circuit de traitement clair à chaque étape.</p>
+          <div class="ligne-dossier"><span class="numero">01</span><span class="libelle"><strong>Réception</strong><small>Enregistrement de la demande</small></span><span class="etat etat-bleu">Reçu</span></div>
+          <div class="ligne-dossier"><span class="numero">02</span><span class="libelle"><strong>Traitement</strong><small>Prise en charge par le service</small></span><span class="etat etat-orange">En cours</span></div>
+          <div class="ligne-dossier"><span class="numero">03</span><span class="libelle"><strong>Finalisation</strong><small>Validation et archivage</small></span><span class="etat etat-vert">Validé</span></div>
+          <div class="visuel-pied"><span class="puce-verte"></span> Interface de suivi administratif</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="fonctionnalites" aria-labelledby="titre-fonctionnalites">
+      <div class="conteneur">
+        <div class="section-intro">
+          <span class="etiquette">LES MODULES PREFECTA</span>
+          <h2 id="titre-fonctionnalites">Tous les outils essentiels, au même endroit.</h2>
+          <p>Accédez aux principales fonctions de votre application administrative.</p>
+        </div>
+        <div class="grille-modules">
+          <a class="carte" href="/src/pages/tableau-de-bord.html"><span class="carte-icone bleu" aria-hidden="true">▦</span><h3>Tableau de bord</h3><p>Consultez une vue d'ensemble des activités et des indicateurs de suivi.</p><span class="carte-lien">Ouvrir le module →</span></a>
+          <a class="carte" href="/src/pages/dossiers.html"><span class="carte-icone turquoise" aria-hidden="true">▤</span><h3>Dossiers administratifs</h3><p>Enregistrez, recherchez, modifiez et suivez les demandes.</p><span class="carte-lien">Ouvrir le module →</span></a>
+          <a class="carte" href="/src/pages/services.html"><span class="carte-icone violet" aria-hidden="true">⌂</span><h3>Services</h3><p>Retrouvez les services administratifs et leurs activités.</p><span class="carte-lien">Ouvrir le module →</span></a>
+          <a class="carte" href="/src/pages/rapports.html"><span class="carte-icone orange" aria-hidden="true">▥</span><h3>Rapports et statistiques</h3><p>Analysez les données et visualisez les résultats des traitements.</p><span class="carte-lien">Ouvrir le module →</span></a>
+          <a class="carte" href="/src/pages/agents.html"><span class="carte-icone rose" aria-hidden="true">♙</span><h3>Agents et accès</h3><p>Gérez les comptes, les rôles et les affectations aux services.</p><span class="carte-lien">Ouvrir le module →</span></a>
+          <a class="carte" href="/src/pages/journal.html"><span class="carte-icone ardoise" aria-hidden="true">◷</span><h3>Journal d'activité</h3><p>Consultez la traçabilité des opérations effectuées dans le système.</p><span class="carte-lien">Ouvrir le module →</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-claire" id="fonctionnement" aria-labelledby="titre-fonctionnement">
+      <div class="conteneur fonctionnement">
+        <div><span class="etiquette">UN PROCESSUS STRUCTURÉ</span><h2 id="titre-fonctionnement">De la réception à la clôture.</h2><p>Suivez le parcours d'un dossier tout en conservant les informations et les étapes de son traitement.</p></div>
+        <div class="etapes"><div><b>01</b><span><strong>Enregistrer</strong><small>Créer le dossier et renseigner ses informations.</small></span></div><div><b>02</b><span><strong>Traiter</strong><small>Identifier le service concerné et mettre à jour le statut.</small></span></div><div><b>03</b><span><strong>Suivre</strong><small>Consulter la fiche et l'historique du dossier.</small></span></div><div><b>04</b><span><strong>Clôturer</strong><small>Finaliser et archiver selon les procédures applicables.</small></span></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="apropos">
+      <div class="conteneur appel-action"><div><span class="etiquette etiquette-claire">PRÊT À COMMENCER ?</span><h2>Bienvenue dans votre espace PREFECTA.</h2><p>Connectez-vous pour accéder aux fonctionnalités autorisées selon votre rôle.</p></div><a class="bouton bouton-blanc" href="/src/pages/tableau-de-bord.html">Accéder à PREFECTA →</a></div>
+    </section>
+  </main>
+
+  <footer class="pied-page"><div class="conteneur pied-contenu"><span><strong>PREFECTA</strong> · Gestion administrative</span><span>Projet de stage · Usage local et données de démonstration</span></div></footer>
+</body>
+</html>
