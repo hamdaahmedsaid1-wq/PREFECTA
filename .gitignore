@@ -1,0 +1,32 @@
+**/node_modules/
+frontend/dist/
+**/.env
+**/.env.*
+!**/.env.example
+*.log
+# Dépendances Node.js
+node_modules/
+**/node_modules/
+
+# Variables secrètes
+.env
+.env.*
+!.env.example
+
+# Compilation Vite
+dist/
+**/dist/
+
+# Fichiers temporaires
+*.log
+.DS_Store
+
+# Sauvegardes MySQL
+*.sql.gz
+*.dump
+database/backup*.sql
+database/dump*.sql
+
+# Données exportées
+*.csv
+*.xlsx

@@ -1,0 +1,10 @@
+'use strict';
+const router=require('express').Router();
+const ctrl=require('../controllers/authController');
+const {auth,requireRole}=require('../middlewares/authMiddleware');
+const rateLimit=require('express-rate-limit');
+const loginLimiter=rateLimit({windowMs:15*60*1000,limit:15,standardHeaders:'draft-7',legacyHeaders:false,message:{error:'Trop de tentatives. Réessaie plus tard.'}});
+router.post('/login',loginLimiter,ctrl.login);
+router.get('/me',auth,ctrl.me);
+router.post('/change-password',auth,ctrl.changePassword);
+module.exports=router;
